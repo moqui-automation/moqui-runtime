@@ -116,8 +116,8 @@ along with this software (see the LICENSE.md file). If not, see
 
         // jQuery/UI
         html_scripts.add('/libs/jquery/jquery.min.js')
-        // Bootstrap
-        html_scripts.add('/libs/twitter-bootstrap/js/bootstrap.min.js')
+        // Bootstrap 5 bundle
+        html_scripts.add('/libs/bootstrap/js/bootstrap.min.js')
         // Moqui webroot layout
         html_stylesheets.add('/css/webroot-layout.css')
     </script></pre-actions>
