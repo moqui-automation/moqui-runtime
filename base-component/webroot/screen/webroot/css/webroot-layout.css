@@ -136,10 +136,8 @@ body,
     margin-top: -5px;
 }
 
-#top .navbar:not(.moqui-topbar) .navbar-right.btn,
-#top .navbar:not(.moqui-topbar) .navbar-right .btn,
-#top .navbar:not(.moqui-topbar) .navbar-right.btn-group,
-#top .navbar:not(.moqui-topbar) .navbar-right .btn-group {
+#top .navbar:not(.moqui-topbar) .navbar-right:is(.btn, .btn-group),
+#top .navbar:not(.moqui-topbar) .navbar-right :is(.btn, .btn-group) {
     margin-right: 0;
     margin-left: 0;
 }
@@ -539,11 +537,13 @@ nav.form-list-nav .pagination .page-item.active .page-link {
 /* Cards/panels/wells compatibility                                            */
 /* ========================================================================== */
 
-.panel .panel-heading {
+.panel .panel-heading,
+.card > .card-header {
     position: relative;
 }
 
-.panel .panel-heading .panel-toolbar {
+.panel .panel-heading .panel-toolbar,
+.card > .card-header :is(.panel-toolbar, .card-toolbar) {
     position: absolute;
     top: 0;
     right: 0;
@@ -555,47 +555,7 @@ nav.form-list-nav .pagination .page-item.active .page-link {
 }
 
 .panel .panel-heading > h5,
-.panel .panel-heading > span {
-    display: inline-block;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 16px;
-}
-
-.panel,
-.panel .panel-body {
-    background: transparent;
-}
-
-.panel-body > table.table {
-    width: calc(100% + 30px);
-    max-width: none;
-    margin: -15px;
-}
-
-.panel {
-    margin-bottom: 12px;
-}
-
-.panel-body {
-    padding: 8px;
-}
-
-.well > .list-inline {
-    margin-bottom: 0;
-}
-
-.card > .card-header {
-    position: relative;
-}
-
-.card > .card-header .panel-toolbar,
-.card > .card-header .card-toolbar {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
+.panel .panel-heading > span,
 .card > .card-header > h5,
 .card > .card-header > span,
 .card > .card-header > .card-title {
@@ -605,23 +565,28 @@ nav.form-list-nav .pagination .page-item.active .page-link {
     font-size: 16px;
 }
 
-.card,
-.card .card-body {
+:is(.panel, .card),
+:is(.panel, .card) :is(.panel-body, .card-body) {
     background: transparent;
 }
 
+.panel-body > table.table,
 .card-body > table.table {
     width: calc(100% + 30px);
     max-width: none;
     margin: -15px;
 }
 
-.card {
+:is(.panel, .card) {
     margin-bottom: 12px;
 }
 
-.card-body {
+:is(.panel-body, .card-body) {
     padding: 8px;
+}
+
+.well > .list-inline {
+    margin-bottom: 0;
 }
 
 /* ========================================================================== */
@@ -1018,10 +983,6 @@ span.hover-image-container img.hover-image {
     background-color: var(--moqui-image-hover-bg);
     box-shadow: 0 0 6px rgba(132, 132, 132, 0.75);
     border-radius: 4px;
-    -webkit-box-shadow: 0 0 6px rgba(132, 132, 132, 0.75);
-    -moz-box-shadow: 0 0 6px rgba(132, 132, 132, 0.75);
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
 }
 
 span.hover-image-container:hover img.hover-image {
@@ -1121,26 +1082,34 @@ body.hide-nav {
         background-color: var(--moqui-table-row-print) !important;
     }
 
-    /* Legacy grid print fallback */
+    /* Legacy grid print fallback (BS3 + BS5 width classes) */
     .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6,
     .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
     .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
-    .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+    .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+    .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+    .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+    .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6,
+    .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12,
+    .col-xxl-1, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6,
+    .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-10, .col-xxl-11, .col-xxl-12,
+    .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+    .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
         float: left;
     }
 
-    .col-sm-12, .col-md-12 { width: 100%; }
-    .col-sm-11, .col-md-11 { width: 91.66666667%; }
-    .col-sm-10, .col-md-10 { width: 83.33333333%; }
-    .col-sm-9,  .col-md-9  { width: 75%; }
-    .col-sm-8,  .col-md-8  { width: 66.66666667%; }
-    .col-sm-7,  .col-md-7  { width: 58.33333333%; }
-    .col-sm-6,  .col-md-6  { width: 50%; }
-    .col-sm-5,  .col-md-5  { width: 41.66666667%; }
-    .col-sm-4,  .col-md-4  { width: 33.33333333%; }
-    .col-sm-3,  .col-md-3  { width: 25%; }
-    .col-sm-2,  .col-md-2  { width: 16.66666667%; }
-    .col-sm-1,  .col-md-1  { width: 8.33333333%; }
+    :is(.col-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xl-12, .col-xxl-12) { width: 100%; }
+    :is(.col-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xl-11, .col-xxl-11) { width: 91.66666667%; }
+    :is(.col-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xl-10, .col-xxl-10) { width: 83.33333333%; }
+    :is(.col-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xl-9, .col-xxl-9) { width: 75%; }
+    :is(.col-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xl-8, .col-xxl-8) { width: 66.66666667%; }
+    :is(.col-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xl-7, .col-xxl-7) { width: 58.33333333%; }
+    :is(.col-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xl-6, .col-xxl-6) { width: 50%; }
+    :is(.col-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xl-5, .col-xxl-5) { width: 41.66666667%; }
+    :is(.col-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xl-4, .col-xxl-4) { width: 33.33333333%; }
+    :is(.col-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xl-3, .col-xxl-3) { width: 25%; }
+    :is(.col-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xl-2, .col-xxl-2) { width: 16.66666667%; }
+    :is(.col-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xl-1, .col-xxl-1) { width: 8.33333333%; }
 }
 
 
@@ -1233,17 +1202,17 @@ body.hide-nav {
 }
 
 .moqui-topbar__crumbs .navbar-text,
-.moqui-topbar__crumbs a,
-.moqui-topbar__current {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.moqui-topbar__crumbs .navbar-text,
 .moqui-topbar__crumbs a {
     margin: 0;
     color: rgba(255, 255, 255, 0.72);
     text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.moqui-topbar__current {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .moqui-topbar__crumbs i,
