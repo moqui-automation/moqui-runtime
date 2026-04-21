@@ -104,6 +104,42 @@
           </ul>
         </div>
 
+        <div id="theme-menu" class="moqui-topbar__dropdown">
+          <label for="bootstrap-theme-select" class="visually-hidden">${ec.l10n.localize('Bootstrap Theme')}</label>
+          <select id="bootstrap-theme-select"
+                  class="form-select form-select-sm bg-dark text-light border-secondary"
+                  title="${ec.l10n.localize('Bootstrap Theme')}"
+                  aria-label="${ec.l10n.localize('Bootstrap Theme')}">
+            <option value="">Bootstrap (Default)</option>
+            <option value="brite">Brite</option>
+            <option value="cerulean">Cerulean</option>
+            <option value="cosmo">Cosmo</option>
+            <option value="cyborg">Cyborg</option>
+            <option value="darkly">Darkly</option>
+            <option value="flatly">Flatly</option>
+            <option value="journal">Journal</option>
+            <option value="litera">Litera</option>
+            <option value="lumen">Lumen</option>
+            <option value="lux">Lux</option>
+            <option value="materia">Materia</option>
+            <option value="minty">Minty</option>
+            <option value="morph">Morph</option>
+            <option value="pulse">Pulse</option>
+            <option value="quartz">Quartz</option>
+            <option value="sandstone">Sandstone</option>
+            <option value="simplex">Simplex</option>
+            <option value="sketchy">Sketchy</option>
+            <option value="slate">Slate</option>
+            <option value="solar">Solar</option>
+            <option value="spacelab">Spacelab</option>
+            <option value="superhero">Superhero</option>
+            <option value="united">United</option>
+            <option value="vapor">Vapor</option>
+            <option value="yeti">Yeti</option>
+            <option value="zephyr">Zephyr</option>
+          </select>
+        </div>
+
         <button type="button"
                 class="btn btn-sm btn-outline-light moqui-topbar__icon-btn"
                 title="${ec.l10n.localize('Switch Dark/Light')}"
@@ -125,6 +161,62 @@
 
 <script>
 (function() {
+    var BOOTSWATCH_VERSION = '5.3.8';
+    var BOOTSWATCH_CSS_BASE = 'https://cdn.jsdelivr.net/npm/bootswatch@' + BOOTSWATCH_VERSION + '/dist/';
+    var LOCAL_BOOTSTRAP_MARKER = '/libs/bootstrap/css/bootstrap.min.css';
+    var themePreferenceKey = 'moqui.bootstrapTheme';
+
+    function getBootstrapLinkEl() {
+        var links = document.querySelectorAll('link[rel="stylesheet"][href]');
+        for (var i = 0; i < links.length; i++) {
+            var href = links[i].getAttribute('href') || '';
+            if (href.indexOf(LOCAL_BOOTSTRAP_MARKER) >= 0 || href.indexOf('/bootswatch@') >= 0) return links[i];
+        }
+        return null;
+    }
+
+    function getDefaultBootstrapHref() {
+        var linkEl = getBootstrapLinkEl();
+        if (!linkEl) return null;
+        var existing = linkEl.getAttribute('data-default-href');
+        if (existing) return existing;
+        existing = linkEl.getAttribute('href');
+        linkEl.setAttribute('data-default-href', existing);
+        return existing;
+    }
+
+    function applyBootstrapTheme(themeName) {
+        var linkEl = getBootstrapLinkEl();
+        if (!linkEl) return;
+
+        var defaultHref = getDefaultBootstrapHref();
+        if (!defaultHref) return;
+
+        if (!themeName) {
+            linkEl.setAttribute('href', defaultHref);
+            return;
+        }
+
+        linkEl.setAttribute('href', BOOTSWATCH_CSS_BASE + encodeURIComponent(themeName) + '/bootstrap.min.css');
+    }
+
+    function initBootstrapThemeSwitcher() {
+        var selectEl = document.getElementById('bootstrap-theme-select');
+        if (!selectEl) return;
+
+        var savedTheme = '';
+        try { savedTheme = localStorage.getItem(themePreferenceKey) || ''; } catch (e) {}
+
+        if (savedTheme) applyBootstrapTheme(savedTheme);
+        selectEl.value = savedTheme;
+
+        selectEl.addEventListener('change', function() {
+            var selectedTheme = selectEl.value || '';
+            applyBootstrapTheme(selectedTheme);
+            try { localStorage.setItem(themePreferenceKey, selectedTheme); } catch (e) {}
+        });
+    }
+
     function syncNavbarCurrentTitle() {
         var titleEl = document.getElementById('navbar-current-title');
         if (!titleEl) return;
@@ -198,8 +290,12 @@
     document.addEventListener('up:fragment:loaded', syncNavbarCurrentTitle);
     document.addEventListener('up:fragment:inserted', syncNavbarCurrentTitle);
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', syncNavbarCurrentTitle);
+        document.addEventListener('DOMContentLoaded', function() {
+            initBootstrapThemeSwitcher();
+            syncNavbarCurrentTitle();
+        });
     } else {
+        initBootstrapThemeSwitcher();
         syncNavbarCurrentTitle();
     }
 })();
