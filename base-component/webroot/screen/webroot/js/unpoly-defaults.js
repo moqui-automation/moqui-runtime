@@ -522,22 +522,28 @@
         window.__moquiBootstrapCompatBound = true;
 
         document.addEventListener('click', function(ev) {
-            var trigger = ev.target && ev.target.closest ? ev.target.closest('[data-bs-toggle="dropdown"], [data-toggle="dropdown"]') : null;
+            var trigger = ev.target && ev.target.closest ? ev.target.closest('[data-toggle="dropdown"]') : null;
             if (!trigger) return;
+            if (trigger.getAttribute('data-bs-toggle')) return;
             if (!(window.bootstrap && window.bootstrap.Dropdown)) return;
             ev.preventDefault();
+            if (ev.stopPropagation) ev.stopPropagation();
+            if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
             window.bootstrap.Dropdown.getOrCreateInstance(trigger).toggle();
         }, true);
 
         document.addEventListener('click', function(ev) {
-            var trigger = ev.target && ev.target.closest ? ev.target.closest('[data-bs-toggle="collapse"], [data-toggle="collapse"]') : null;
+            var trigger = ev.target && ev.target.closest ? ev.target.closest('[data-toggle="collapse"]') : null;
             if (!trigger) return;
+            if (trigger.getAttribute('data-bs-toggle')) return;
             if (!(window.bootstrap && window.bootstrap.Collapse)) return;
             var selector = trigger.getAttribute('data-bs-target') || trigger.getAttribute('data-target') || trigger.getAttribute('href');
             if (!selector || selector.charAt(0) !== '#') return;
             var target = document.querySelector(selector);
             if (!target) return;
             ev.preventDefault();
+            if (ev.stopPropagation) ev.stopPropagation();
+            if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
             window.bootstrap.Collapse.getOrCreateInstance(target).toggle();
         }, true);
     }
